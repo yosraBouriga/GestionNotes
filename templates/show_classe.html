@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% include 'header.html' %}
+
+{% block body %}
+    <div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h2>Modifier classe {{ classe.nom }}</h2>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('updateClasse', id=classe.id)}}">
+                     <div class="form-group row">
+                                <label class="col-md-2 col-form-label" for="nom">Nom</label>
+                                <div class="col-md-4">
+                                    <input type="text" value="{{ classe.nom}}" class="form-control" id="nom" name="nom"
+                                        value="" autocomplete="off">
+                                </div>
+                            </div>
+                        <label class="col-md-2 col-form-label" for="nom">Les matières</label>
+
+                    {% for matiere in matieres %}
+                    <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="form-check col-md-4">
+                  <input class="form-check-input  " type="checkbox" value="{{ matiere.id }}" name="matiere-{{ matiere.id }}" {% if matiere in classe.matieres %} checked {% endif %}>
+                  <label class="form-check-label" for="flexCheckDefault">
+                      {{ matiere.nom}}
+                  </label>
+                </div>
+                        </div>
+                    {% endfor %}
+                <div class="form-group row">
+                    <div class="col-md-12 text-right">
+                    <button type="submit" class="btn btn-primary float-right">Valider</button>
+                        </div>
+                </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    </div>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">CIN</th>
+      <th>Nom</th>
+        <td>Prénom</td>
+
+    </tr>
+  </thead>
+  <tbody>
+  {% for etudiant in classe.etudiants %}
+    <tr>
+      <th scope="row">{{etudiant.cin}}</th>
+      <td>{{ etudiant.nom }}</td>
+          <td>{{ etudiant.prenom }}</td>
+
+
+    </tr>
+  {% endfor %}
+
+
+  </tbody>
+</table>{% endblock body %}

@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% include 'header.html' %}
+
+{% block body %}
+    <div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h2>Modifier étudiant {{ etudiant.nom }} {{ etudiant.prenom }}</h2>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('updateEtudiant', id=etudiant.id)}}">
+                    <div class="form-group row">
+                                <label class="col-md-2 col-form-label" for="nom">Nom</label>
+                                <div class="col-md-4">
+                                    <input type="text" value="{{ etudiant.nom }}" class="form-control" id="nom" name="nom"
+                                        value="" autocomplete="off">
+                                </div>
+                            </div>
+                    <div class="form-group row">
+                                <label class="col-md-2 col-form-label" for="prenom">Prénom</label>
+                                <div class="col-md-4">
+                                    <input type="text"  value="{{ etudiant.prenom }}" class="form-control" id="prenom" name="prenom"
+                                        value="" autocomplete="off">
+                                </div>
+                            </div>
+                    <div class="form-group row">
+                                <label class="col-md-2 col-form-label" for="cin">Cin</label>
+                                <div class="col-md-4">
+                                    <input disabled type="text" value="{{ etudiant.cin }}" class="form-control" id="cin" name="cin"
+                                        value="" autocomplete="off" required pattern="[0-9]{8}">
+                                </div>
+                            </div>
+                    <div class="form-group row">
+                                <label class="col-md-2 col-form-label" for="classe">Classe</label>
+                                    <div class="col-md-4">
+                                        <select class="form-control" id="classe" name="classe_id">
+                                        {% for classe in classes %}
+                                            <option value="{{ classe.id }}" {% if classe.id == etudiant.classe_id %} selected {% endif %}>{{ classe.nom }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                <div class="form-group row">
+                                <label class="col-md-2 col-form-label" for="cin">Moyenne</label>
+                                <div class="col-md-4">
+                                    <input disabled type="text" disabled value="{{ etudiant.moyenne() }}" class="form-control" id="cin" name="cin"
+                                        value="" autocomplete="off" required pattern="[0-9]{8}">
+                                </div>
+                            </div>
+
+
+                    <div class="form-group row">
+                    <div class="col-md-12 text-right">
+                    <button type="submit" class="btn btn-primary float-right">Valider</button>
+                        </div>
+                </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    </div>
+<table class="table">
+  <thead>
+    <tr>
+      <th >Matiere</th>
+      <th>Coefficient</th>
+        <th>Note ds</th>
+        <th>Note examen</th>
+        <th>Moyenne</th>
+
+
+    </tr>
+  </thead>
+  <tbody>
+  <form action="{{ url_for('storeNotes', id_etudiant=etudiant.id)}}" method="POST">
+{% for matiere in etudiant.classe.matieres %}
+    <tr>
+    <td>{{ matiere.nom }}</td>
+    <td>{{ matiere.coef }}</td>
+    <td>
+    {% set ns = namespace(var_ds=True) %}
+    {% for note in etudiant.notes  %}
+    {% if note in matiere.notes %}
+
+        <input type="number" value="{{ note.note_ds }}" name="ds-{{matiere.id }}" style="width:75px;"/>
+            {% set ns.var_ds = False %}
+        {% endif %}
+    {% endfor %}
+    {% if ns.var_ds == True %}
+        <input type="number" value="0" name="ds-{{matiere.id }}" style="width:75px;"/>
+
+    {% endif %}
+    </td>
+     <td>
+    {% set ns = namespace(var_ex=True) %}
+
+    {% for note in etudiant.notes  %}
+    {% if note in matiere.notes %}
+        <input type="number" value="{{ note.note_examen }}" name="ex-{{matiere.id }}" style="width:75px;"/>
+                 {% set ns.var_ex = False %}
+
+        {% endif %}
+    {% endfor %}
+      {% if ns.var_ex == True %}
+        <input type="number" value="0" name="ex-{{matiere.id }}" style="width:75px;"/>
+
+    {% endif %}
+    </td>
+
+     <td>
+    {% set ns = namespace(var_moy=True) %}
+
+    {% for note in etudiant.notes  %}
+    {% if note in matiere.notes %}
+        {{ note.moy() }}
+      {% set ns.var_moy = False %}
+
+        {% endif %}
+    {% endfor %}
+       {% if ns.var_moy == True %}
+        0
+    {% endif %}
+    </td>
+    </tr>
+  {% endfor %}
+  <button class="btn btn-primary" type="submit">Enregistrer</button>
+  </form>
+
+  </tbody>
+</table>{% endblock body %}

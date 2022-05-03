@@ -1,0 +1,17 @@
+alembic==1.7.7
+click==7.1.2
+colorama==0.4.4
+Flask==1.1.4
+Flask-Login==0.6.1
+Flask-Migrate==2.6.0
+Flask-Script==2.0.6
+Flask-SQLAlchemy==2.5.1
+greenlet==1.1.2
+importlib-metadata==4.11.3
+itsdangerous==1.1.0
+Jinja2==2.11.3
+Mako==1.2.0
+MarkupSafe==2.0.1
+SQLAlchemy==1.4.36
+Werkzeug==1.0.1
+zipp==3.8.0

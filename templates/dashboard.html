@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% include 'header.html' %}
+
+{% block body %}
+    {% if session.role == 'admin' %}
+    <div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h2>Ajouter une classe</h2>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('classeStore')}}">
+                     <div class="form-group row">
+                                <label class="col-md-2 col-form-label" for="nom">Nom</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" id="nom" name="nom"
+                                        value="" autocomplete="off">
+                                </div>
+                            </div>
+                <div class="form-group row">
+                    <div class="col-md-12 text-right">
+                    <button type="submit" class="btn btn-primary float-right">Ajouter</button>
+                        </div>
+                </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    </div>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Nom</th>
+        <td>Action</td>
+
+    </tr>
+  </thead>
+  <tbody>
+  {% for classe in classes %}
+    <tr>
+      <th scope="row">{{classe.id}}</th>
+      <td>{{ classe.nom }}</td>
+    <td><a href="{{ url_for('showClasse', id=classe.id) }}" class="btn btn-primary">Voir</a></td>
+
+    </tr>
+  {% endfor %}
+
+
+  </tbody>
+</table>
+{% else %}
+        <div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h2>Bienvenue {{ etudiant.nom }} {{ etudiant.prenom }}</h2>
+                <h2>Votre moyenne: {{ etudiant.moyenne() }}</h2>
+
+            </div>
+            <div class="card-body">
+
+
+            </div>
+        </div>
+    </div>
+    </div>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Matiere</th>
+      <th scope="col">Note ds</th>
+      <th scope="col">Note examen</th>
+              <th scope="col">Moyenne</th>
+
+
+    </tr>
+  </thead>
+  <tbody>
+{% for note in notes %}
+    <tr>
+    <td>{{ note.matiere.nom }}</td>
+        <td>{{ note.note_ds }}</td>
+    <td>{{ note.note_examen }}</td>
+    <td>{{ note.moy() }}</td>
+
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+    {% endif %}
+{% endblock body %}
