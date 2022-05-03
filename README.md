@@ -1,5 +1,7 @@
 # GestionNotes
 ***
+## Installation
+***
 1. Installez toutes les exigences nécessaires : pip install -r requirements.txt
 2. Exécutez la commande suivante : venv\Scripts\activate
 3. Lancez l'application : app.py
